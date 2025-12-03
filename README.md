@@ -1,68 +1,85 @@
-# Invoice_system
-📄 Invoice Processor - Sistema Inteligente de Procesamiento de Facturas
-https://img.shields.io/badge/Python-3.8+-blue.svg
-https://img.shields.io/badge/FastAPI-0.104+-green.svg
-https://img.shields.io/badge/Tesseract-OCR-orange.svg
+📄 Invoice System — Procesador Inteligente de Facturas
 
-Sistema automático para extraer y procesar información de facturas utilizando OCR y procesamiento de lenguaje natural. Convierte PDFs e imágenes en datos estructurados listos para análisis.
+
+
+Sistema automático para extraer y procesar información de facturas utilizando OCR y técnicas de procesamiento de lenguaje natural. Convierte PDFs e imágenes en datos estructurados listos para análisis.
 
 🎯 Características Principales
 ✅ Extracción Inteligente
+
+
 OCR avanzado con Tesseract para PDFs e imágenes
 
-Reconocimiento automático de campos de facturas
 
-Preprocesamiento de imágenes para mejorar precisión
+Reconocimiento automático de campos clave
 
-Conversión PDF → Imagen integrada
+
+Preprocesamiento de imágenes para mayor precisión
+
+
+Conversión integrada PDF → Imagen
+
 
 ✅ API REST
-FastAPI para procesamiento en tiempo real
+
+
+API en FastAPI para procesamiento en tiempo real
+
 
 Endpoints RESTful para subida y consulta
 
-Documentación automática (Swagger/OpenAPI)
 
-Async/await para alta concurrencia
+Documentación automática (Swagger / OpenAPI)
+
+
+Soporte async/await para alta concurrencia
+
 
 ✅ Funcionalidades Adicionales
+
+
 Envío automático de resultados por email
+
 
 Almacenamiento en PostgreSQL (opcional)
 
+
 Validación y limpieza de datos
+
 
 Interfaz web para gestión
 
+
+
 🏗️ Arquitectura del Sistema
-text
 invoice-processor/
 │
 ├── 📁 app/                    # Aplicación FastAPI
-│   ├── main.py              # Punto de entrada API
-│   ├── models.py            # Modelos SQLAlchemy
-│   ├── schemas.py           # Esquemas Pydantic
-│   ├── database.py          # Conexión DB
-│   └── email_service.py     # Servicio de email
+│   ├── main.py                # Punto de entrada API
+│   ├── models.py              # Modelos SQLAlchemy
+│   ├── schemas.py             # Esquemas Pydantic
+│   ├── database.py            # Conexión DB
+│   └── email_service.py       # Servicio de email
 │
-├── 📁 core/                  # Lógica de negocio
-│   └── invoice_processor.py # Motor de procesamiento
+├── 📁 core/                   # Lógica de negocio
+│   └── invoice_processor.py   # Motor de procesamiento
 │
-├── 📁 uploads/              # Archivos temporales
-├── 📁 pdfs/                 # PDFs de prueba
-├── 📁 pdf_images/          # Imágenes convertidas
+├── 📁 uploads/                # Archivos temporales
+├── 📁 pdfs/                   # PDFs de prueba
+├── 📁 pdf_images/             # Imágenes convertidas
 │
-├── config.py               # Configuración
-├── requirements.txt        # Dependencias
-├── README.md              # Documentación
-└── .gitignore            # Archivos ignorados
+├── config.py                  # Configuración
+├── requirements.txt           # Dependencias
+├── README.md                  # Documentación
+└── .gitignore                 # Archivos ignorados
+
+
 🚀 Instalación Rápida
-1. Clonar el Repositorio
-bash
+1. Clonar el repositorio
 git clone https://github.com/tuusuario/invoice-processor.git
 cd invoice-processor
-2. Crear Entorno Virtual
-bash
+
+2. Crear entorno virtual
 # Windows
 python -m venv venv
 venv\Scripts\activate
@@ -70,95 +87,84 @@ venv\Scripts\activate
 # Linux/Mac
 python3 -m venv venv
 source venv/bin/activate
-3. Instalar Dependencias
-bash
-pip install -r requirements.txt
-4. Configurar Tesseract OCR
-Windows:
 
-Descargar desde: Tesseract para Windows
+3. Instalar dependencias
+pip install -r requirements.txt
+
+4. Instalar Tesseract OCR
+Windows
+
+
+Descargar: “Tesseract para Windows”
+
 
 Instalar en: C:\Program Files\Tesseract-OCR
 
-Agregar al PATH del sistema
 
-Linux (Ubuntu/Debian):
+Agregar al PATH
 
-bash
+
+Linux (Ubuntu/Debian)
 sudo apt update
 sudo apt install tesseract-ocr tesseract-ocr-spa
-macOS:
 
-bash
+macOS
 brew install tesseract
-5. Configurar Variables
-Crear config.py:
 
-python
+5. Configurar Variables (config.py)
 class Config:
-    # Ruta de Tesseract (Windows)
     TESSERACT_PATH = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-    
-    # Ruta de Tesseract (Linux/Mac)
     # TESSERACT_PATH = '/usr/bin/tesseract'
-    
-    # Configuración de Gmail
+
     GMAIL_USER = "tu_email@gmail.com"
     GMAIL_APP_PASSWORD = "tu_contraseña_app"
-    
-    # Base de datos (opcional)
+
     DATABASE_URL = "postgresql://user:pass@localhost/invoice_db"
-    
-    # Configuración general
+
     UPLOAD_FOLDER = "uploads"
     MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
+
+
 🧪 Uso Básico
 Procesar Facturas desde Código
-python
 import asyncio
 from invoice_processor import processor
 
 async def ejemplo_procesamiento():
-    # Procesar PDF
     resultado_pdf = await processor.process_invoice("pdfs/factura_1.pdf")
-    
-    # Procesar imagen
     resultado_img = await processor.process_invoice("uploads/factura.png")
-    
-    # Mostrar resultados
+
     print(f"📄 Factura: {resultado_pdf['numero_factura']}")
     print(f"💰 Total: ${resultado_pdf['monto_total']}")
     print(f"🏢 Proveedor: {resultado_pdf['proveedor']}")
 
-# Ejecutar
 asyncio.run(ejemplo_procesamiento())
-Generar Datos de Prueba
-bash
-# Crear 3 PDFs de ejemplo
-python create_test_pdfs.py
 
-# Crear 3 imágenes de ejemplo
+Generar Datos de Prueba
+python create_test_pdfs.py
 python create_test_invoices.py
-Ejecutar la API
-bash
+
+Ejecutar API
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-Accede a:
+
+Accesos:
+
 
 API: http://localhost:8000
 
-Documentación: http://localhost:8000/docs
+
+Docs (Swagger): http://localhost:8000/docs
+
 
 Redoc: http://localhost:8000/redoc
 
+
+
 📡 API Endpoints
-POST /upload/
-Subir y procesar archivo
-
-bash
+▶️ POST /upload/ — Subir y procesar archivo
 curl -X POST -F "file=@factura.pdf" http://localhost:8000/upload/
-Response:
 
-json
+Respuesta:
 {
   "id": 1,
   "numero_factura": "INV-2024-001",
@@ -167,149 +173,128 @@ json
   "fecha_emision": "15/12/2024",
   "estado": "procesado"
 }
-POST /process/
-Procesar archivo existente
 
-bash
+▶️ POST /process/ — Procesar archivo existente
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{"file_path": "uploads/factura.pdf"}' \
   http://localhost:8000/process/
-GET /invoices/
-Listar todas las facturas
 
-bash
+▶️ GET /invoices/ — Listar facturas
 curl http://localhost:8000/invoices/
-GET /invoices/{id}
-Obtener factura específica
 
-bash
+▶️ GET /invoices/{id} — Obtener una factura específica
 curl http://localhost:8000/invoices/1
+
+
 🔍 Campos Extraídos Automáticamente
-Campo	Tipo	Descripción	Ejemplo
-numero_factura	String	Identificador único	"INV-2024-001"
-proveedor	String	Nombre del emisor	"TECNOLOGIAS ABC S.A."
-cliente	String	Nombre del receptor	"EMPRESA XYZ"
-monto_total	Float	Total facturado	1250.00
-impuestos	Float	IVA/Impuestos	200.00
-fecha_emision	String	Fecha de emisión	"15/12/2024"
-fecha_vencimiento	String	Fecha límite pago	"30/12/2024"
-descripcion	String	Descripción servicios	"CONSULTORÍA IA"
-condiciones	String	Términos de pago	"PAGO A 30 DÍAS"
-confianza_ocr	Float	Confianza extracción	0.85
-🔄 Flujo de Procesamiento
-
-
-
-
-
-
-
-
-
-
-
-
+CampoTipoDescripciónEjemplonumero_facturaStringIdentificador único"INV-2024-001"proveedorStringEmisor"TECNOLOGIAS ABC"clienteStringReceptor"EMPRESA XYZ"monto_totalFloatTotal1250.00impuestosFloatIVA / Impuestos200.00fecha_emisionStringFecha emisión"15/12/2024"fecha_vencimientoStringFecha de vencimiento"30/12/2024"descripcionStringServicios"CONSULTORÍA IA"condicionesStringTérminos de pago"PAGO A 30 DÍAS"confianza_ocrFloatNivel confianza OCR0.85
 
 🛠️ Comandos Útiles
-bash
-# Ejecutar tests
-python -m pytest tests/
+python -m pytest tests/          # Ejecutar tests
+python -c "import pytesseract; print(pytesseract.get_tesseract_version())"  # Verificar Tesseract
+python cleanup.py                # Limpiar archivos temporales
+tail -f app.log                  # Logs en tiempo real
 
-# Verificar instalación Tesseract
-python -c "import pytesseract; print(pytesseract.get_tesseract_version())"
 
-# Limpiar archivos temporales
-python cleanup.py
-
-# Ver logs en tiempo real
-tail -f app.log
 🐛 Solución de Problemas Comunes
 ❌ "Tesseract not found"
-python
-# Verifica config.py
-TESSERACT_PATH = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Windows
-# TESSERACT_PATH = '/usr/bin/tesseract'  # Linux/Mac
+Verificar en config.py:
+TESSERACT_PATH = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
 ❌ Error con PDFs
-bash
-# Instalar PyMuPDF
 pip install PyMuPDF
-
-# O usar alternativa
 python test_pdf_processor.py --use-pdfplumber
+
 ❌ Error de Email
-Usar contraseña de aplicación de Gmail
 
-Habilitar acceso apps menos seguras
 
-Verificar configuración en config.py
+Usar contraseña de aplicación Gmail
 
-❌ Archivos muy grandes
-python
-# En config.py
-MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB máximo
+
+Revisar config.py
+
+
+❌ Archivos demasiado grandes
+MAX_FILE_SIZE = 10 * 1024 * 1024
+
+
 📊 Rendimiento y Optimización
-Tipo Archivo	Tiempo Procesamiento	Precisión
-PDF 1 página	2-3 segundos	85-95%
-Imagen PNG	1-2 segundos	90-95%
-PDF 10 páginas	10-15 segundos	80-90%
-Tips para mejor precisión:
+Tipo ArchivoTiempoPrecisiónPDF 1 página2-3 s85–95%Imagen PNG1-2 s90–95%PDF 10 páginas10-15 s80–90%
+Tips:
 
-Escanear a 300 DPI mínimo
 
-Usar formato PNG en lugar de JPG
+Escanear a 300 DPI
 
-Asegurar contraste adecuado
 
-Texto orientado horizontalmente
+Preferir PNG sobre JPG
 
-🤝 Contribuir al Proyecto
-Fork el repositorio
 
-Crea rama de feature: git checkout -b feature/nueva-funcion
+Buen contraste
 
-Commit cambios: git commit -m 'Agrega nueva función'
 
-Push a la rama: git push origin feature/nueva-funcion
+Texto horizontal
 
-Abre Pull Request
 
-Guías de Estilo
-Usar Black para formateo
 
-Escribir docstrings en inglés
+🤝 Contribuir
 
-Incluir tests para nuevas funciones
 
-Actualizar README.md si es necesario
+Hacer fork
+
+
+Crear rama: git checkout -b feature/nueva-funcion
+
+
+Commit: git commit -m 'Agrega nueva función'
+
+
+Push: git push origin feature/nueva-funcion
+
+
+Abrir Pull Request
+
+
+Guías:
+
+
+Formateo con Black
+
+
+Docstrings en inglés
+
+
+Incluir tests
+
+
+Mantener README actualizado
+
+
 
 📄 Licencia
-MIT License - ver archivo LICENSE para detalles.
+MIT License — ver archivo LICENSE.
 
-👥 Autores
-Tu Nombre - @tuusuario
+👥 Autor:
 
-Contribuidores - Lista de contribuidores
+
+Diego Rojas. 2025
+
+
+Contribuidores
+
+
 
 🙏 Agradecimientos
-Tesseract OCR - Motor OCR
 
-FastAPI - Framework web
 
-PyMuPDF - Procesamiento PDF
+Tesseract OCR
 
-Pillow - Procesamiento imágenes
 
-📞 Soporte
-📧 Email: soporte@tudominio.com
+FastAPI
 
-🐛 Issues: GitHub Issues
 
-💬 Discord: Canal de Discord
+PyMuPDF
 
-<div align="center">
-⭐ Si este proyecto te ayudó, ¡dale una estrella en GitHub!
-https://api.star-history.com/svg?repos=tuusuario/invoice-processor&type=Date
 
-</div>
+Pillow
 
